@@ -1,0 +1,35 @@
+## Rules for Building a 3D Exploration Game with Three.js
+
+1. **Optimize Rendering for Performance**
+   - Use efficient rendering techniques in Three.js, such as minimizing draw calls by combining static geometries (e.g., ground plane and cubes).
+   - Limit the scene to essential objects (e.g., one ground plane and 10 cubes) and avoid resource-intensive features like shadows unless necessary.
+   - Target 60 FPS by optimizing the game loop and monitoring performance.
+
+2. **Implement Smooth and Responsive Controls**
+   - Provide fluid WASD movement and mouse-based camera rotation, using delta time to ensure consistent movement across frame rates.
+   - Restrict camera pitch to ±89 degrees to prevent flipping.
+   - Process inputs efficiently to maintain performance.
+
+3. **Use Simple yet Effective Collision Detection**
+   - Implement basic Axis-Aligned Bounding Box (AABB) collision detection in the x-z plane, ignoring the y-axis for flat terrain.
+   - Integrate lightweight collision checks into the game loop for seamless gameplay.
+
+4. **Structure Code for Modularity and Scalability**
+   - Break the codebase into multiple files to organize functionality:
+     - `main.js`: The entry point of the application. Initializes the game, sets up the scene, and runs the game loop.
+     - `scene.js`: Handles Three.js scene setup, including the camera, renderer, lights, ground plane, and cubes.
+     - `controls.js`: Manages player input (keyboard and mouse) and updates the player’s position and camera orientation.
+     - `collision.js`: Contains collision detection logic to check interactions between the player and scene objects.
+     - `utils.js`: Stores reusable helper functions (e.g., math utilities) and constants (e.g., movement speed).
+   - Use ES6 modules (`import`/`export`) to connect these files, ensuring clean dependencies and modern JavaScript practices.
+   - Encapsulate logic where appropriate (e.g., a `Player` class in `controls.js`) to keep each module focused and maintainable.
+
+5. **Ensure Cross-Browser Compatibility and Performance**
+   - Test the game in major browsers (Chrome, Firefox, Safari) to verify consistent rendering and input behavior.
+   - Use `requestAnimationFrame` for the game loop to optimize performance across devices.
+   - Manage Three.js resources (e.g., geometries, materials) to prevent memory leaks.
+
+6. **Set Up a Reliable Testing and Deployment Pipeline**
+   - Use a local development server (e.g., Live Server or Node.js with Express) to test the game during development.
+   - Include basic error handling and console logging for debugging.
+   - Ensure all files and assets load correctly for deployment on platforms like GitHub Pages or Netlify.
