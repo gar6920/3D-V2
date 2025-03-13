@@ -69,13 +69,24 @@ project-root/
 ### controls.js
 - Imports Three.js and required modules
 - Manages all user input (keyboard, mouse)
-- Handles pointer lock for smooth camera rotation
+- Implements robust pointer lock system:
+  - Handles pointer lock requests and state changes
+  - Provides error handling for unsupported browsers
+  - Shows/hides UI based on pointer lock state
+  - Implements ESC key to exit pointer lock
 - Tracks movement states (forward, backward, left, right)
-- Captures mouse movement for camera rotation
-- Implements yaw (left/right) and pitch (up/down) rotation
-- Limits pitch to prevent camera flipping (±89 degrees)
-- Updates camera position and rotation based on input:
+- Implements advanced mouse look controls:
+  - Configurable mouse sensitivity via MOUSE_SENSITIVITY constant
+  - Cross-browser support for mouse movement events
+  - Proper cleanup of event listeners
+  - Smooth camera rotation with proper limits
+- Updates camera rotation:
   - Uses 'YXZ' rotation order for proper FPS camera behavior
+  - Implements yaw (left/right) rotation
+  - Implements pitch (up/down) with -89° to +89° limits
+  - Prevents camera flipping at extreme angles
+- Handles movement:
+  - Only processes movement when pointer is locked
   - Calculates movement direction based on camera rotation
   - Normalizes movement vector for consistent speed
   - Applies MOVEMENT_SPEED constant for smooth motion
