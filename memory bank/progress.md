@@ -73,3 +73,25 @@ Status: Ready for Step 5 implementation.
 Current state: The application now shows a large green ground plane that extends 100 units in each direction, properly lit by the directional and ambient lights. The scene is ready for adding additional objects (cubes) in the next step.
 
 Status: Ready for Step 6 implementation.
+
+## Step 6: Add Initial Cubes - COMPLETED
+- Created a `createCube` function in scene.js that generates cubes with specified:
+  - Position (x, y, z)
+  - Size
+  - Color
+- Added initial set of cubes to create an interesting environment:
+  - Row of three 1x1 unit cubes at z=-10:
+    - Red cube at x=-5
+    - Blue cube at x=0
+    - Purple cube at x=5
+  - Two scattered 1x1 unit cubes at z=-15:
+    - Yellow cube at x=-3
+    - Cyan cube at x=3
+  - One larger 2x2 unit gray cube at z=-20 as an obstacle
+- All cubes are properly positioned on the ground plane (y coordinate is half their height)
+- Cubes are tracked in an array for future collision detection
+- Verified that all cubes render correctly with proper lighting and shadows
+
+Current state: The scene now contains multiple colorful cubes at different positions and distances, creating an interesting environment for the player to navigate around. The cubes are properly lit and cast shadows, providing depth to the scene.
+
+Status: Ready for Step 7 implementation.

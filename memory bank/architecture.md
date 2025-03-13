@@ -55,7 +55,16 @@ project-root/
   - MeshStandardMaterial with green color (0x00ff00)
   - Positioned at y=0 and rotated -90° on X-axis
   - Provides base for object placement and player movement
-- Exports scene objects, camera, and lights for use in other modules
+- Implements cube creation and management:
+  - createCube function for generating parametric cubes
+  - Parameters include position (x, y, z), size, and color
+  - Uses BoxGeometry and MeshStandardMaterial
+  - Maintains array of all created cubes for collision detection
+  - Initial scene setup includes:
+    - Row of three 1x1 colored cubes at z=-10
+    - Two scattered 1x1 cubes at z=-15
+    - One larger 2x2 gray obstacle cube at z=-20
+- Exports scene objects, camera, lights, and cube management functions
 
 ### controls.js
 - Imports Three.js and required modules

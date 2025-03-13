@@ -43,8 +43,18 @@ function initScene() {
     ground.position.y = 0; // Position at y=0
     scene.add(ground);
     
-    // Scene will be populated in later steps with:
-    // - Cubes and other objects
+    // Add initial cubes to the scene
+    // Create a row of cubes at different positions
+    createCube(-5, 0.5, -10, 1, 0xff0000); // Red cube
+    createCube(0, 0.5, -10, 1, 0x0000ff);  // Blue cube
+    createCube(5, 0.5, -10, 1, 0xff00ff);   // Purple cube
+    
+    // Create some scattered cubes
+    createCube(-3, 0.5, -15, 1, 0xffff00);  // Yellow cube
+    createCube(3, 0.5, -15, 1, 0x00ffff);   // Cyan cube
+    
+    // Create a larger cube as an obstacle
+    createCube(0, 1, -20, 2, 0x808080);     // Large gray cube
 }
 
 // Create a cube with specified parameters
