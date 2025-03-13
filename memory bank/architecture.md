@@ -50,6 +50,11 @@ project-root/
   - Both lights use white color (0xffffff)
   - Directional light intensity: 1.0
   - Ambient light intensity: 0.2
+- Implements ground plane:
+  - Uses PlaneGeometry (100x100 units)
+  - MeshStandardMaterial with green color (0x00ff00)
+  - Positioned at y=0 and rotated -90° on X-axis
+  - Provides base for object placement and player movement
 - Exports scene objects, camera, and lights for use in other modules
 
 ### controls.js

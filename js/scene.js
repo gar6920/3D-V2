@@ -35,8 +35,15 @@ function initScene() {
     ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
     scene.add(ambientLight);
     
+    // Create and add ground plane
+    const groundGeometry = new THREE.PlaneGeometry(100, 100);
+    const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+    ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+    ground.position.y = 0; // Position at y=0
+    scene.add(ground);
+    
     // Scene will be populated in later steps with:
-    // - Ground plane
     // - Cubes and other objects
 }
 
