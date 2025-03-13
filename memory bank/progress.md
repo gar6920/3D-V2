@@ -29,3 +29,19 @@ All files are properly connected and ready for further implementation. The modul
 Current state: The application shows a sky blue canvas that fills the browser window with instruction text at the top left. The scene, camera, and renderer are properly set up and await further implementation.
 
 Status: Ready for Step 3 implementation.
+
+## Step 3: Create the Scene and Camera - COMPLETED
+- Created a new Three.js scene in scene.js
+- Set up PerspectiveCamera with correct parameters:
+  - Field of view: 75 degrees
+  - Aspect ratio: Window width / height
+  - Near clipping plane: 0.1
+  - Far clipping plane: 1000
+- Positioned camera at (0, 1.5, 0) for first-person view
+- Properly exported scene and camera for use in other modules
+- Successfully integrated camera and scene in main.js game loop
+- Verified rendering works with sky blue background
+
+Current state: The application shows a sky blue canvas that fills the browser window with instruction text at the top left. The scene and camera are properly set up with correct parameters and positioning. The game loop is running smoothly, ready for adding objects and lighting in the next steps.
+
+Status: Ready for Step 4 implementation.
