@@ -1,5 +1,6 @@
 // Collision.js - Handles collision detection between objects
 
+import * as THREE from 'three';
 import { camera } from './scene.js';
 import { cubes } from './scene.js';
 

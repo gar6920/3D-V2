@@ -1,5 +1,8 @@
 // Scene.js - Handles the Three.js scene, camera, and objects
 
+// Import Three.js
+import * as THREE from 'three';
+
 // Create scene and camera
 const scene = new THREE.Scene();
 let camera;

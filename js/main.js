@@ -1,3 +1,6 @@
+// Import Three.js
+import * as THREE from 'three';
+
 // Import modules
 import { initScene, scene, camera } from './scene.js';
 import { initControls, updateControls } from './controls.js';

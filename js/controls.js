@@ -1,5 +1,6 @@
 // Controls.js - Handles player input and camera movement
 
+import * as THREE from 'three';
 import { camera } from './scene.js';
 import { CONSTANTS } from './utils.js';
 

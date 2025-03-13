@@ -5,13 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Exploration Game</title>
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Import maps for ES6 modules support -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+            }
+        }
+    </script>
 </head>
 <body>
     <canvas id="game-canvas"></canvas>
     <div id="instructions">Use WASD to move, mouse to look around.</div>
-    
-    <!-- Include Three.js from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js"></script>
     
     <!-- Main script as module -->
     <script type="module" src="js/main.js"></script>
