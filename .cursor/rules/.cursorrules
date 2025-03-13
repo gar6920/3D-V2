@@ -37,3 +37,7 @@
 
 7. ** GIT **
    When executing git operations, use only simple, direct commands (git add, git commit, git push) without chaining them together with && operators. Always run each git command separately, with minimal flags, and avoid using complex PowerShell syntax or features. Do not attempt to automate multi-step git workflows.
+
+
+8. ## OTHER
+Always add Three.js addon paths to import map in index.html before using loaders/controls

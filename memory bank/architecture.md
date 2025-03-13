@@ -33,7 +33,13 @@ project-root/
 - Application entry point
 - Imports Three.js and other modules
 - Initializes the Three.js WebGLRenderer with anti-aliasing
+- Sets up the renderer for high-quality shadows:
+  - Enables shadowMap
+  - Uses PCFSoftShadowMap for smoother shadow edges
 - Sets canvas size to match the window dimensions
+- Sets up async initialization and error handling:
+  - Handles async model loading
+  - Provides error handling for failed initialization
 - Sets up the game loop using requestAnimationFrame
 - Coordinates interactions between other modules
 - Handles window resize events (maintaining proper aspect ratio)
@@ -42,12 +48,16 @@ project-root/
 
 ### scene.js
 - Imports Three.js properly as an ES6 module
+- Imports GLTFLoader from Three.js addons for loading 3D models
 - Creates and manages the Three.js Scene object
 - Sets up the camera with the specified parameters (FOV: 75, near: 0.1, far: 1000)
 - Creates and manages player representation:
   - Creates playerGroup as a parent object for both player model and camera
-  - Implements a placeholder player model (red box) until the final model is integrated
-  - Positions the player model at appropriate height from the ground
+  - Loads custom GLB model for the player character
+  - Includes fallback to basic box model if loading fails
+  - Sets player model position to sit properly on the ground (y=0.75)
+  - Initially sets model to invisible for first-person view
+  - Handles material properties (metalness, roughness) for realistic appearance
   - Parents the camera to playerGroup for first-person view
 - Contains functions for creating and managing 3D objects
 - Implements lighting system:
@@ -56,15 +66,19 @@ project-root/
   - Both lights use white color (0xffffff)
   - Directional light intensity: 1.0
   - Ambient light intensity: 0.2
+  - Configures shadows for directional light with high-quality settings
+  - Sets shadow camera parameters for optimal shadow coverage
 - Implements ground plane:
   - Uses PlaneGeometry (100x100 units)
   - MeshStandardMaterial with green color (0x00ff00)
   - Positioned at y=0 and rotated -90° on X-axis
+  - Configured to receive shadows
   - Provides base for object placement and player movement
 - Implements cube creation and management:
   - createCube function for generating parametric cubes
   - Parameters include position (x, y, z), size, and color
   - Uses BoxGeometry and MeshStandardMaterial
+  - Configures cubes to cast and receive shadows
   - Maintains array of all created cubes for collision detection
   - Initial scene setup includes:
     - Row of three 1x1 colored cubes at z=-10
@@ -100,12 +114,15 @@ project-root/
   - Uses 'YXZ' rotation order for proper FPS camera behavior
   - Implements yaw (left/right) rotation
   - Implements pitch (up/down) with -89° to +89° limits
+  - Inverts Y-axis in third-person view for more intuitive control
   - Prevents camera flipping at extreme angles
 - Handles movement:
   - Only processes movement when pointer is locked
   - Calculates movement direction based on player rotation
   - Normalizes movement vector for consistent speed
   - Applies MOVEMENT_SPEED constant for smooth motion
+  - Checks for collisions before applying movement
+  - Only moves if no collision would occur at the future position
   - Updates playerGroup position rather than camera directly
   - Movement is relative to player facing direction
   - WASD keys move in the corresponding view-relative directions
@@ -113,20 +130,27 @@ project-root/
 ### collision.js
 - Imports Three.js and required modules (camera, playerGroup, and cubes from scene.js)
 - Implements AABB (Axis-Aligned Bounding Box) collision detection system:
-  - Defines player collision box dimensions (width: 0.5, height: 1.8)
+  - Defines player collision box dimensions to match the model (width: 1.0, height: 1.5)
   - Creates player AABB based on playerGroup position
   - Creates cube AABBs based on their positions and sizes
   - Implements checkAABBCollision utility function for box intersection tests
+- Provides collision prediction capability:
+  - Can check collisions at a future position before moving
+  - Supports passing a potential future position for testing
+  - Prevents movement into colliding positions
+- Makes collision boxes precise:
+  - Player box starts from ground level (y=0) and extends to full height
+  - Cube boxes start from their base and extend to full height
+  - Uses exact dimensions without margins for precise collision boundaries
 - Exports checkCollisions function that:
-  - Creates player AABB from current playerGroup position
+  - Creates player AABB from current or future playerGroup position
   - Checks for collisions with each cube in the scene
   - Returns true if any collision is detected
   - Returns false if no collisions are found
 - Integrates with controls.js to prevent player movement into objects:
-  - Previous position is stored before movement
-  - Movement is applied
-  - Collision check is performed
-  - Position is reverted if collision occurs
+  - Collision is checked BEFORE movement
+  - Movement is only applied if no collision would occur
+  - This prevents any possible overlap between player and objects
 
 ### utils.js
 - Provides global constants for game parameters:
@@ -147,6 +171,29 @@ project-root/
 - Each module explicitly imports its dependencies
 - Avoids global variables by using module-scoped variables and explicit exports
 - Promotes clean code organization and maintainability
+- Three.js addons (like GLTFLoader) are properly imported through the import map
+- The application structure supports async module loading for 3D models
+
+### 3D Model Loading
+- GLB models are loaded using GLTFLoader from the Three.js addons
+- Async/await pattern handles model loading with proper error handling
+- Fallback mechanisms provide simple geometry if model loading fails
+- Model traversal ensures properties are applied to all mesh children
+- Models are properly positioned, scaled, and integrated with the scene
+
+### Shadow Implementation
+- PCFSoftShadowMap provides higher quality shadows
+- Directional light shadow parameters are configured for optimal quality
+- Shadow maps have sufficient resolution (2048x2048) for detailed shadows
+- Shadow camera parameters define the shadow frustum for good coverage
+- All objects are properly configured to cast and/or receive shadows
+
+### Collision Detection System
+- Uses precise Axis-Aligned Bounding Boxes (AABBs)
+- Collision checks happen before movement to prevent any overlap
+- Box dimensions match visual objects for realistic collisions
+- The system supports checking collisions at potential future positions
+- Collisions are resolved by preventing movement rather than reverting
 
 ### Camera Management
 - The camera has two modes with seamless switching:

@@ -196,3 +196,38 @@ Status: Ready for Step 10 implementation after validation.
 Current state: The game now supports both first-person and third-person camera modes. Players can toggle between modes with the 'V' key, zoom in/out with the mouse wheel, and adjust the camera angle by moving the mouse up/down in third-person mode. The player is represented by a temporary red box model that is visible in third-person view. Movement and collision detection work correctly in both view modes.
 
 Status: Ready for implementing the next feature (visible player character with more complex model).
+
+## Feature 1: Adding a Visible Player Character - COMPLETED
+- Implemented GLB model loading for the player character:
+  - Added GLTFLoader to the import system
+  - Created proper ES6 import maps in index.html to support addons
+  - Implemented async loading with proper error handling
+  - Added fallback to simple cube if model loading fails
+- Enhanced the player model implementation:
+  - Positioned model at correct height (0.75 units) to sit properly on ground
+  - Set initial visibility to false for first-person mode
+  - Added proper material properties (roughness, metalness)
+  - Applied shadow settings to cast and receive shadows
+  - Set model name to 'player' for easy identification
+- Improved camera and model integration:
+  - Positioned camera at eye level (1.5 units) at the top of model
+  - Set proper camera rotation order ('YXZ') for FPS-style rotation
+  - Ensured model is invisible in first-person view to prevent clipping
+  - Made model visible in third-person view
+- Enhanced shadow system:
+  - Enabled shadow maps in the renderer (PCFSoftShadowMap)
+  - Set up high-quality shadow settings for the directional light
+  - Configured shadow camera parameters for better quality
+  - Applied shadow properties to all objects (player, cubes, ground)
+- Improved collision detection:
+  - Updated collision box dimensions to match the player model exactly
+  - Switched from "move-then-check" to "check-then-move" system
+  - Made collision boxes more precise to prevent any overlap
+  - Optimized collision detection to work properly in both view modes
+- Fixed mouse controls:
+  - Inverted Y-axis in third-person view only for better control
+  - Removed debug console logs
+
+Current state: The game now features a custom 3D model loaded from a GLB file as the player character. The model is properly integrated with the camera, shadows, and collision systems. Movement is smooth, and the model doesn't clip through or overlap with objects. The player character is invisible in first-person view and visible in third-person view. The third-person camera controls are more intuitive with inverted Y-axis.
+
+Status: Ready for Feature 2 implementation.
