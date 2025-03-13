@@ -95,12 +95,22 @@ project-root/
   - WASD keys move in the corresponding view-relative directions
 
 ### collision.js
-- Imports Three.js and required modules
-- Implements collision detection algorithms (AABB)
-- Includes utility function for checking AABB collisions
-- Checks for collisions between the player and objects
-- Exports collision utility functions
-- Will prevent player movement into objects in future steps
+- Imports Three.js and required modules (camera and cubes from scene.js)
+- Implements AABB (Axis-Aligned Bounding Box) collision detection system:
+  - Defines player collision box dimensions (width: 0.5, height: 1.8)
+  - Creates player AABB based on camera position
+  - Creates cube AABBs based on their positions and sizes
+  - Implements checkAABBCollision utility function for box intersection tests
+- Exports checkCollisions function that:
+  - Creates player AABB from current camera position
+  - Checks for collisions with each cube in the scene
+  - Returns true if any collision is detected
+  - Returns false if no collisions are found
+- Integrates with controls.js to prevent player movement into objects:
+  - Previous position is stored before movement
+  - Movement is applied
+  - Collision check is performed
+  - Position is reverted if collision occurs
 
 ### utils.js
 - Provides global constants for game parameters:

@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { camera } from './scene.js';
 import { CONSTANTS } from './utils.js';
+import { checkCollisions } from './collision.js';
 
 // Movement flags
 let moveForward = false;
@@ -169,9 +170,18 @@ function updateControls() {
         // Apply movement speed
         moveDirection.multiplyScalar(CONSTANTS.MOVEMENT_SPEED);
         
+        // Store current position in case we need to revert
+        const previousPosition = camera.position.clone();
+        
         // Update camera position
         camera.position.x += moveDirection.x;
         camera.position.z += moveDirection.z;
+        
+        // Check for collisions
+        if (checkCollisions()) {
+            // If collision occurred, revert to previous position
+            camera.position.copy(previousPosition);
+        }
     }
 }
 
