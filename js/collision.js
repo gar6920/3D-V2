@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { camera, playerGroup, playerModel } from './scene.js';
 import { cubes } from './scene.js';
 import { CONSTANTS, wrapPosition } from './utils.js';
+import { animals } from './animals.js';
 
 // Constants for collision detection
 const PLAYER_WIDTH = 1.0;   // Player model width/depth is 1.0
@@ -25,6 +26,20 @@ function checkCollisions(futurePosition = null) {
     );
 
     // Check collision with each cube
+    if (checkCubeCollisions(playerMin, playerMax)) {
+        return true;
+    }
+    
+    // Check collision with each animal
+    if (checkAnimalCollisions(playerMin, playerMax)) {
+        return true;
+    }
+    
+    return false; // No collisions
+}
+
+// Check for collisions with cubes
+function checkCubeCollisions(playerMin, playerMax) {
     for (const cube of cubes) {
         // Get cube dimensions
         const size = cube.geometry.parameters.width;
@@ -91,7 +106,62 @@ function checkCollisions(futurePosition = null) {
         }
     }
     
-    return false; // No collisions
+    return false; // No cube collisions
+}
+
+// Check for collisions with animals
+function checkAnimalCollisions(playerMin, playerMax) {
+    for (const animal of animals) {
+        const animalObject = animal.object;
+        
+        if (!animalObject) continue;
+        
+        // Create a bounding box for the animal
+        const boundingBox = new THREE.Box3().setFromObject(animalObject);
+        
+        // Check for collision
+        if (checkAABBCollisionWithBox3(playerMin, playerMax, boundingBox)) {
+            return true; // Collision detected
+        }
+        
+        // Check for wrapped collisions near boundaries
+        const boundary = CONSTANTS.WORLD_BOUNDARY;
+        const animalSize = boundingBox.getSize(new THREE.Vector3());
+        const animalWidth = animalSize.x;
+        const animalDepth = animalSize.z;
+        
+        // Only check wrapped collisions for animals near the boundaries
+        if (Math.abs(animalObject.position.x) > boundary - animalWidth * 2 || 
+            Math.abs(animalObject.position.z) > boundary - animalDepth * 2) {
+            
+            // Create a temporary position that's wrapped to the other side
+            const wrappedAnimalPos = new THREE.Vector3();
+            
+            // Check for X-axis wrapping
+            if (animalObject.position.x > boundary - animalWidth) {
+                wrappedAnimalPos.set(animalObject.position.x - CONSTANTS.WORLD_SIZE, animalObject.position.y, animalObject.position.z);
+                const wrappedBox = boundingBox.clone().translate(new THREE.Vector3(-CONSTANTS.WORLD_SIZE, 0, 0));
+                if (checkAABBCollisionWithBox3(playerMin, playerMax, wrappedBox)) return true;
+            } else if (animalObject.position.x < -boundary + animalWidth) {
+                wrappedAnimalPos.set(animalObject.position.x + CONSTANTS.WORLD_SIZE, animalObject.position.y, animalObject.position.z);
+                const wrappedBox = boundingBox.clone().translate(new THREE.Vector3(CONSTANTS.WORLD_SIZE, 0, 0));
+                if (checkAABBCollisionWithBox3(playerMin, playerMax, wrappedBox)) return true;
+            }
+            
+            // Check for Z-axis wrapping
+            if (animalObject.position.z > boundary - animalDepth) {
+                wrappedAnimalPos.set(animalObject.position.x, animalObject.position.y, animalObject.position.z - CONSTANTS.WORLD_SIZE);
+                const wrappedBox = boundingBox.clone().translate(new THREE.Vector3(0, 0, -CONSTANTS.WORLD_SIZE));
+                if (checkAABBCollisionWithBox3(playerMin, playerMax, wrappedBox)) return true;
+            } else if (animalObject.position.z < -boundary + animalDepth) {
+                wrappedAnimalPos.set(animalObject.position.x, animalObject.position.y, animalObject.position.z + CONSTANTS.WORLD_SIZE);
+                const wrappedBox = boundingBox.clone().translate(new THREE.Vector3(0, 0, CONSTANTS.WORLD_SIZE));
+                if (checkAABBCollisionWithBox3(playerMin, playerMax, wrappedBox)) return true;
+            }
+        }
+    }
+    
+    return false; // No animal collisions
 }
 
 // Helper function to check collision with a wrapped position of a cube
@@ -109,6 +179,14 @@ function checkWrappedCollision(playerMin, playerMax, cubeCenterPos, cubeSize) {
     );
     
     return checkAABBCollision(playerMin, playerMax, wrappedCubeMin, wrappedCubeMax);
+}
+
+// Helper function to check collision with a Box3
+function checkAABBCollisionWithBox3(minA, maxA, box3) {
+    const minB = box3.min;
+    const maxB = box3.max;
+    
+    return checkAABBCollision(minA, maxA, minB, maxB);
 }
 
 // Check if two axis-aligned bounding boxes (AABB) intersect

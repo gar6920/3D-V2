@@ -14,9 +14,16 @@ project-root/
 │   ├── scene.js         # Three.js scene, camera, and object setup
 │   ├── controls.js      # Player input and movement controls
 │   ├── collision.js     # Collision detection system
+│   ├── animals.js       # Animal model loading and placement
 │   └── utils.js         # Constants and utility functions
 └── models/              # Directory for 3D models
-    └── a box test from blender.glb  # Test model for the player character
+    ├── a box test from blender.glb  # Test model for the player character
+    └── animals/         # Directory for animal models
+        ├── dog.blend    # Blender source file for dog model
+        ├── dog.glb      # Exported GLB model for dog
+        ├── elephant.blend  # Blender source file for elephant model
+        ├── elephant.glb # Exported GLB model for elephant
+        └── ...          # Other animal models
 ```
 
 ## Module Responsibilities
@@ -156,6 +163,19 @@ project-root/
   - Collision is checked BEFORE movement
   - Movement is only applied if no collision would occur
   - This prevents any possible overlap between player and objects
+
+### animals.js
+- Handles loading and management of animal models in the game world
+- Uses GLTFLoader to load animal models from models/animals directory
+- Provides functionality to:
+  - Load animal models asynchronously when the game starts
+  - Add name tags to each animal for identification
+  - Place animals randomly throughout the game world
+  - Prevent duplicate animals and manage the animal collection
+- Exports the animal list for use in collision detection
+- Integrates with the wrapping world boundary system
+- Supports dynamic scaling and rotation of animal models
+- Adds proper shadows to all animal models for visual consistency
 
 ### utils.js
 - Provides global constants for game parameters:

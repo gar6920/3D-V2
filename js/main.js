@@ -6,6 +6,7 @@ import { initScene, scene, camera, updateMirrorObjects } from './scene.js';
 import { initControls, updateControls } from './controls.js';
 import { checkCollisions } from './collision.js';
 import { CONSTANTS } from './utils.js';
+import { initAnimals } from './animals.js';
 
 // Renderer
 let renderer;
@@ -29,6 +30,9 @@ async function init() {
         // Initialize scene, camera, controls
         await initScene();
         initControls();
+        
+        // Initialize animals
+        initAnimals();
         
         // Handle window resize
         window.addEventListener('resize', onWindowResize, false);
