@@ -41,3 +41,8 @@
 
 8. ## OTHER
 Always add Three.js addon paths to import map in index.html before using loaders/controls
+
+The token '&&' is not a valid statement separator in this version.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordE 
+   xception
+    + FullyQualifiedErrorId : InvalidEndOfLine

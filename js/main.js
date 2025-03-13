@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 
 // Import modules
-import { initScene, scene, camera } from './scene.js';
+import { initScene, scene, camera, updateMirrorObjects } from './scene.js';
 import { initControls, updateControls } from './controls.js';
 import { checkCollisions } from './collision.js';
 import { CONSTANTS } from './utils.js';
@@ -21,7 +21,7 @@ async function init() {
         antialias: true
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x87CEEB); // Sky blue color
+    renderer.setClearColor(0x87CEEB); // Sky blue color - same as fog color
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
@@ -59,6 +59,9 @@ function animate() {
     
     // Check for collisions
     checkCollisions();
+    
+    // Update mirror objects when player is near boundaries
+    updateMirrorObjects();
     
     // Render the scene
     renderer.render(scene, camera);

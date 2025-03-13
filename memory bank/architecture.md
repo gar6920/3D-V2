@@ -68,23 +68,28 @@ project-root/
   - Ambient light intensity: 0.2
   - Configures shadows for directional light with high-quality settings
   - Sets shadow camera parameters for optimal shadow coverage
-- Implements ground plane:
-  - Uses PlaneGeometry (100x100 units)
-  - MeshStandardMaterial with green color (0x00ff00)
+- Implements enhanced ground plane and atmospheric effects:
+  - Uses PlaneGeometry (1000x1000 units) for extended ground
+  - MeshStandardMaterial with natural green color (0x228822)
   - Positioned at y=0 and rotated -90° on X-axis
   - Configured to receive shadows
-  - Provides base for object placement and player movement
+  - Adds subtle grid pattern for distance perception
+  - Implements scene fog (0x87CEEB) for infinite horizon effect
+  - Fog starts at 50 units and becomes opaque at 300 units
+- Implements boundary markers and world wrapping visualization:
+  - createBoundaryMarkers function generates subtle markers at world edges
+  - Colored corner markers provide orientation (red, green, blue, yellow)
+  - createMirrorObjects function duplicates objects near boundaries
+  - updateMirrorObjects ensures visual duplicates are updated when needed
+  - Handles X-axis, Z-axis and corner duplication cases
 - Implements cube creation and management:
   - createCube function for generating parametric cubes
   - Parameters include position (x, y, z), size, and color
   - Uses BoxGeometry and MeshStandardMaterial
   - Configures cubes to cast and receive shadows
   - Maintains array of all created cubes for collision detection
-  - Initial scene setup includes:
-    - Row of three 1x1 colored cubes at z=-10
-    - Two scattered 1x1 cubes at z=-15
-    - One larger 2x2 gray obstacle cube at z=-20
-- Exports scene objects, camera, lights, playerGroup, playerModel, and cube management functions
+  - Initial scene setup includes multiple cubes scattered throughout the world
+- Exports scene objects, camera, lights, playerGroup, playerModel, and all management functions
 
 ### controls.js
 - Imports Three.js and required modules
@@ -155,13 +160,16 @@ project-root/
 ### utils.js
 - Provides global constants for game parameters:
   - Movement and rotation speeds
-  - World size
+  - World size and boundaries (WORLD_SIZE: 100, WORLD_BOUNDARY: 50)
   - Object properties
   - Colors
   - Collision parameters
-- Contains utility functions used across modules
+- Contains utility functions used across modules:
+  - wrapPosition: Handles coordinate wrapping at world boundaries
+  - getRandomInt: Generates random integers within a range
+  - getRandomColor: Generates random colors
 - Centralizes configuration values for easy tweaking
-- Provides helper functions for common operations (e.g., random number generation)
+- Provides helper functions for common operations
 
 ## Technical Details
 
@@ -188,8 +196,42 @@ project-root/
 - Shadow camera parameters define the shadow frustum for good coverage
 - All objects are properly configured to cast and/or receive shadows
 
+### World Structure and Boundary System
+- The game world uses a bounded area (WORLD_SIZE: 100 units) with seamless wrapping
+- A WORLD_BOUNDARY constant (50 units) defines the point at which wrapping occurs
+- When the player reaches a boundary, they seamlessly wrap to the opposite side
+- This creates an infinite-feeling world while maintaining a manageable playable area
+- The world wrapping is handled by the wrapPosition utility function in utils.js
+- The wrapping applies to both the X and Z axes (horizontal plane)
+- Player Y position (height) is not affected by wrapping
+
+### Infinite Ground Effect
+- The ground plane is rendered much larger (1000x1000 units) than the actual playable area
+- Fog is used to create the illusion of infinite distance:
+  - Scene fog starts at 50 units and becomes fully opaque at 300 units
+  - Fog color (0x87CEEB) matches the sky color for a seamless horizon
+  - This prevents any visible "edge" where the ground plane ends
+- A subtle grid pattern (opacity 0.15) provides depth perception and movement feedback
+- The ground uses a natural green color (0x228822) for a more pleasing visual appearance
+- Boundary markers are subtle and match the ground color for minimal visual disruption
+- Colored corner markers provide directional orientation while maintaining the infinite feel
+
+### Visual Duplicate System
+- Objects near boundaries are duplicated on the opposite side for visual continuity
+- The createMirrorObjects function identifies objects that need duplication
+- Duplicates are created using the createMirrorCube function
+- The system handles X-axis, Z-axis, and diagonal (corner) wrapping cases
+- Duplicate objects are slightly transparent (0.9 opacity) for visual differentiation
+- Duplicates are updated when the player approaches a boundary
+- This provides seamless visual transitions when moving across world boundaries
+
 ### Collision Detection System
 - Uses precise Axis-Aligned Bounding Boxes (AABBs)
+- Collision detection is enhanced to handle world wrapping:
+  - Standard collision detection for objects within the normal world boundaries
+  - Special collision detection for objects near world edges
+  - The checkWrappedCollision helper function tests collisions with wrapped positions
+  - Handles X-axis, Z-axis, and corner (diagonal) wrapping cases
 - Collision checks happen before movement to prevent any overlap
 - Box dimensions match visual objects for realistic collisions
 - The system supports checking collisions at potential future positions
@@ -230,9 +272,11 @@ project-root/
 1. User input is captured in controls.js
 2. main.js game loop calls the update functions of other modules
 3. controls.js updates movement variables and view mode based on input
-4. collision.js checks if movement would cause collisions using the playerGroup position
-5. scene.js manages the player model and its visibility based on view mode
-6. main.js renders the updated scene
+4. controls.js calculates a potential future position for the player
+5. utils.js wrapPosition function handles world boundary wrapping if needed
+6. collision.js checks if movement would cause collisions using the wrapped position
+7. scene.js updates visual duplicates via updateMirrorObjects when near boundaries
+8. main.js renders the updated scene with the properly positioned player and objects
 
 This architecture allows for clean separation of concerns while maintaining the ability for modules to communicate through well-defined interfaces (exported functions and variables).
 

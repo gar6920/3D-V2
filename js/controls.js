@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import { camera, scene, playerGroup, playerModel } from './scene.js';
-import { CONSTANTS } from './utils.js';
+import { CONSTANTS, wrapPosition } from './utils.js';
 import { checkCollisions } from './collision.js';
 
 // Movement flags
@@ -284,10 +284,13 @@ function updateControls() {
         // Calculate future position
         const futurePosition = playerGroup.position.clone().add(moveDirection);
         
+        // Wrap the future position around the world boundaries (globe-like wrapping)
+        const wrappedPosition = wrapPosition(futurePosition);
+        
         // Check if moving to the future position would cause a collision
-        if (!checkCollisions(futurePosition)) {
+        if (!checkCollisions(wrappedPosition)) {
             // Only move if no collision would occur
-            playerGroup.position.copy(futurePosition);
+            playerGroup.position.copy(wrappedPosition);
         }
     }
 }

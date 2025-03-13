@@ -231,3 +231,57 @@ Status: Ready for implementing the next feature (visible player character with m
 Current state: The game now features a custom 3D model loaded from a GLB file as the player character. The model is properly integrated with the camera, shadows, and collision systems. Movement is smooth, and the model doesn't clip through or overlap with objects. The player character is invisible in first-person view and visible in third-person view. The third-person camera controls are more intuitive with inverted Y-axis.
 
 Status: Ready for Feature 2 implementation.
+
+## Feature 2: Implementing Globe-Like World Wrapping - COMPLETED
+- Implemented seamless world wrapping to create a globe-like effect:
+  - Added WORLD_BOUNDARY constant (50 units) in utils.js to define the wrapping points
+  - Created a wrapPosition utility function to handle position wrapping logic
+  - Modified player movement to wrap around when reaching world boundaries
+  - Updated collision detection to handle objects at world edges
+- Enhanced visual feedback for world wrapping:
+  - Added boundary markers at the world edges for orientation
+  - Used colored markers at the corners for directional awareness (red, green, blue, yellow)
+  - Created visual duplicates of objects near boundaries to create seamless transitions
+  - Implemented proper duplication for X-axis, Z-axis, and corner (diagonal) wrapping cases
+- Improved collision detection for wrapped world:
+  - Enhanced collision logic to detect collisions with wrapped objects
+  - Added special handling for objects near world boundaries
+  - Implemented proper collision detection for edge and corner cases
+  - Created a checkWrappedCollision helper function for testing collisions with duplicated objects
+- Verified functionality:
+  - Player can seamlessly move across world boundaries in all directions
+  - Objects are properly visible when approaching from either side of a boundary
+  - Collision detection works correctly across world boundaries
+  - Navigation maintains proper orientation during wrapping
+
+Current state: The world now wraps around seamlessly in all directions, creating an infinite-feeling play area while maintaining a bounded size. The player can move continuously in any direction and will wrap around to the opposite side when reaching a boundary, with proper visual feedback and collision handling.
+
+Status: Ready for the next feature implementation.
+
+## Feature 3: Creating an Infinite Ground Effect - COMPLETED
+- Enhanced the ground plane to create an infinite horizon effect:
+  - Expanded ground plane from 100x100 to 1000x1000 units
+  - Used a more natural green color (0x228822) for the ground
+  - Added a subtle grid pattern for better distance perception and movement feedback
+- Implemented atmospheric effects:
+  - Added scene fog matching the sky color (0x87CEEB)
+  - Configured fog to start at 50 units and become opaque at 300 units
+  - Ensured fog color matches the sky for a seamless horizon
+- Improved boundary markers for subtlety:
+  - Reduced marker size and height
+  - Made regular markers match the ground color
+  - Increased spacing between markers
+  - Added transparency for better blending with the environment
+  - Maintained colored corner markers but made them more subtle
+- Enhanced visual duplicates for objects near boundaries:
+  - Made duplicate objects less transparent (0.9 opacity) for better visual consistency
+  - Improved the createMirrorCube function for more natural appearance
+  - Ensured duplicates match the visual style of original objects
+- Maintained all wrapping functionality while improving visual presentation:
+  - World still wraps around at boundaries
+  - Visual experience suggests an infinite landscape
+  - No visible edges where the player might "fall off"
+
+Current state: The game world now has a much more immersive feel with the ground appearing to extend infinitely to the horizon. The grid pattern provides spatial awareness, while the fog creates a natural blend between ground and sky at the distance. The boundary markers are now subtle guides rather than obvious barriers, and the wrapping functionality remains fully intact.
+
+Status: Ready for the next feature implementation.
