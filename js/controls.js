@@ -53,8 +53,6 @@ function initControls() {
     document.addEventListener('click', requestPointerLock, false);
     document.addEventListener('pointerlockchange', onPointerLockChange, false);
     document.addEventListener('pointerlockerror', onPointerLockError, false);
-    
-    console.log("Controls initialized with wheel listener");
 }
 
 // Clean up event listeners
@@ -81,8 +79,6 @@ function onMouseWheel(event) {
     // Get scroll direction and adjust camera distance
     const delta = Math.sign(event.deltaY) * ZOOM_SENSITIVITY;
     cameraDistance = Math.max(MIN_CAMERA_DISTANCE, Math.min(MAX_CAMERA_DISTANCE, cameraDistance + delta));
-    
-    console.log(`Zoom: distance=${cameraDistance.toFixed(2)}`);
 }
 
 // Request pointer lock
@@ -105,7 +101,6 @@ function onPointerLockChange() {
 
 // Handle pointer lock error
 function onPointerLockError() {
-    console.warn('Pointer lock failed. Your browser may not support this feature.');
     const instructions = document.getElementById('instructions');
     if (instructions) {
         instructions.innerHTML = 'Your browser may not support pointer lock. Please try a different browser.';
@@ -128,8 +123,6 @@ function switchViewMode() {
         // Position camera behind and above player
         updateThirdPersonCamera();
         
-        console.log("Switched to third-person view");
-        
     } else {
         // Switch to first-person view
         viewMode = 'firstPerson';
@@ -146,8 +139,6 @@ function switchViewMode() {
         
         // Hide player model in first-person mode to avoid seeing inside it
         playerModel.visible = false;
-        
-        console.log("Switched to first-person view");
     }
 }
 
@@ -237,13 +228,11 @@ function onMouseMove(event) {
         // In third-person view, horizontal mouse movement rotates around the player
         yaw -= mouseX * MOUSE_SENSITIVITY;
         
-        // Vertical mouse movement adjusts camera angle
-        cameraAngle -= mouseY * CAMERA_ANGLE_SENSITIVITY;
+        // Vertical mouse movement adjusts camera angle (inverted)
+        cameraAngle += mouseY * CAMERA_ANGLE_SENSITIVITY;
         
         // Clamp camera angle to reasonable values
         cameraAngle = Math.max(MIN_CAMERA_ANGLE, Math.min(MAX_CAMERA_ANGLE, cameraAngle));
-        
-        console.log(`Camera angle: ${cameraAngle.toFixed(2)}`);
     }
 }
 
@@ -292,17 +281,13 @@ function updateControls() {
         // Apply movement speed
         moveDirection.multiplyScalar(CONSTANTS.MOVEMENT_SPEED);
         
-        // Store current position in case we need to revert
-        const previousPosition = playerGroup.position.clone();
+        // Calculate future position
+        const futurePosition = playerGroup.position.clone().add(moveDirection);
         
-        // Update player group position instead of camera directly
-        playerGroup.position.x += moveDirection.x;
-        playerGroup.position.z += moveDirection.z;
-        
-        // Check for collisions (will need to be updated for player model in Feature 1)
-        if (checkCollisions()) {
-            // If collision occurred, revert to previous position
-            playerGroup.position.copy(previousPosition);
+        // Check if moving to the future position would cause a collision
+        if (!checkCollisions(futurePosition)) {
+            // Only move if no collision would occur
+            playerGroup.position.copy(futurePosition);
         }
     }
 }

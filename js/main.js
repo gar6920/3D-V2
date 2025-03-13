@@ -14,7 +14,7 @@ let renderer;
 let isGameRunning = false;
 
 // Initialize the game
-function init() {
+async function init() {
     // Initialize Three.js renderer
     renderer = new THREE.WebGLRenderer({
         canvas: document.getElementById('game-canvas'),
@@ -22,17 +22,23 @@ function init() {
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x87CEEB); // Sky blue color
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
-    // Initialize scene, camera, controls
-    initScene();
-    initControls();
-    
-    // Handle window resize
-    window.addEventListener('resize', onWindowResize, false);
-    
-    // Start the game loop
-    isGameRunning = true;
-    animate();
+    try {
+        // Initialize scene, camera, controls
+        await initScene();
+        initControls();
+        
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+        
+        // Start the game loop
+        isGameRunning = true;
+        animate();
+    } catch (error) {
+        console.error('Error initializing game:', error);
+    }
 }
 
 // Handle window resize

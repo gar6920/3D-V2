@@ -132,42 +132,6 @@ In main.js, check collisions in the game loop and block camera movement if a col
 Test:
 Move toward a cube. The camera should stop upon contact, not passing through.
 
-Step 10: Add User Interface Instructions
-Instructions:
-In index.html, add a <div>:
-html
-
-<div style="position: absolute; top: 10px; color: white;">Use WASD to move, mouse to look around.</div>
-
-Style it for visibility.
-
-Test:
-Open the game. The instruction text should appear clearly on-screen.
-
-Step 11: Optimize and Test Performance
-Instructions:
-Aim for 60 FPS; monitor frame rate.
-
-Check for performance issues (e.g., excessive draw calls).
-
-Test in Chrome, Firefox, and Safari.
-
-Test:
-Use browser tools to verify FPS and memory usage. The game should run smoothly.
-
-Step 12: Final Testing and Debugging
-Instructions:
-Playtest thoroughly to find bugs.
-
-Verify WASD and mouse controls work.
-
-Ensure collision detection blocks cube penetration.
-
-Confirm all assets load correctly.
-
-Test:
-Play for several minutes, testing all interactions. Fix any issues.
-
 
 
 Clarifications from specific questions:

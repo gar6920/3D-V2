@@ -5,21 +5,22 @@ import { camera, playerGroup, playerModel } from './scene.js';
 import { cubes } from './scene.js';
 
 // Constants for collision detection
-const PLAYER_WIDTH = 0.5;  // Player collision box width/depth
-const PLAYER_HEIGHT = 1.8; // Player collision box height
+const PLAYER_WIDTH = 1.0;   // Player model width/depth is 1.0
+const PLAYER_HEIGHT = 1.5;  // Player model height is 1.5
 
 // Check for collisions between player and objects
-function checkCollisions() {
+function checkCollisions(futurePosition = null) {
     // Create player AABB
+    const position = futurePosition || playerGroup.position;
     const playerMin = new THREE.Vector3(
-        playerGroup.position.x - PLAYER_WIDTH / 2,
-        playerGroup.position.y - PLAYER_HEIGHT / 2,
-        playerGroup.position.z - PLAYER_WIDTH / 2
+        position.x - PLAYER_WIDTH / 2,
+        position.y,  // Start from ground level
+        position.z - PLAYER_WIDTH / 2
     );
     const playerMax = new THREE.Vector3(
-        playerGroup.position.x + PLAYER_WIDTH / 2,
-        playerGroup.position.y + PLAYER_HEIGHT / 2,
-        playerGroup.position.z + PLAYER_WIDTH / 2
+        position.x + PLAYER_WIDTH / 2,
+        position.y + PLAYER_HEIGHT,  // Full height
+        position.z + PLAYER_WIDTH / 2
     );
 
     // Check collision with each cube
@@ -30,12 +31,12 @@ function checkCollisions() {
         // Create cube AABB
         const cubeMin = new THREE.Vector3(
             cube.position.x - size / 2,
-            cube.position.y - size / 2,
+            cube.position.y,  // Start from base of cube
             cube.position.z - size / 2
         );
         const cubeMax = new THREE.Vector3(
             cube.position.x + size / 2,
-            cube.position.y + size / 2,
+            cube.position.y + size,  // Full height of cube
             cube.position.z + size / 2
         );
 
