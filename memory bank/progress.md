@@ -45,3 +45,19 @@ Status: Ready for Step 3 implementation.
 Current state: The application shows a sky blue canvas that fills the browser window with instruction text at the top left. The scene and camera are properly set up with correct parameters and positioning. The game loop is running smoothly, ready for adding objects and lighting in the next steps.
 
 Status: Ready for Step 4 implementation.
+
+## Step 4: Add Lighting - COMPLETED
+- Added directional light to simulate sunlight:
+  - Position: (5, 10, 7)
+  - Intensity: 1.0
+  - Color: white (0xffffff)
+- Added ambient light for even illumination:
+  - Intensity: 0.2
+  - Color: white (0xffffff)
+- Properly exported lights for use in other modules
+- Successfully integrated lights into the scene
+- Verified scene renders correctly with lighting system in place
+
+Current state: The application shows a sky blue canvas that fills the browser window with instruction text at the top left. The scene, camera, and lighting are properly set up with correct parameters and positioning. The lighting system is ready for illuminating objects that will be added in the next steps.
+
+Status: Ready for Step 5 implementation.

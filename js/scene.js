@@ -7,6 +7,10 @@ import * as THREE from 'three';
 const scene = new THREE.Scene();
 let camera;
 
+// Lighting
+let directionalLight;
+let ambientLight;
+
 // Game objects
 let ground;
 let cubes = [];
@@ -23,8 +27,15 @@ function initScene() {
     camera.position.set(0, 1.5, 0); // Set camera at eye level (1.5 units)
     camera.lookAt(0, 1.5, -1); // Look forward
     
+    // Add lighting
+    directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(5, 10, 7);
+    scene.add(directionalLight);
+
+    ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    scene.add(ambientLight);
+    
     // Scene will be populated in later steps with:
-    // - Lighting
     // - Ground plane
     // - Cubes and other objects
 }
@@ -40,5 +51,5 @@ function createCube(x, y, z, size, color) {
     return cube;
 }
 
-// Export the scene, camera, and functions
-export { scene, camera, initScene, createCube, cubes }; 
+// Export the scene, camera, lights, and functions
+export { scene, camera, directionalLight, ambientLight, initScene, createCube, cubes }; 

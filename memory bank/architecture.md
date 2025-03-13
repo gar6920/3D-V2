@@ -44,8 +44,13 @@ project-root/
 - Sets up the camera with the specified parameters (FOV: 75, near: 0.1, far: 1000)
 - Positions the camera at eye level (1.5 units high)
 - Contains functions for creating and managing 3D objects
-- Will handle lighting and environment setup in future steps
-- Exports scene objects for use in other modules
+- Implements lighting system:
+  - Directional light (sunlight simulation) at position (5, 10, 7)
+  - Ambient light for even scene illumination
+  - Both lights use white color (0xffffff)
+  - Directional light intensity: 1.0
+  - Ambient light intensity: 0.2
+- Exports scene objects, camera, and lights for use in other modules
 
 ### controls.js
 - Imports Three.js and required modules
