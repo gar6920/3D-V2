@@ -167,3 +167,32 @@ Status: Ready for Step 9 implementation.
 Current state: The game now has fully functional collision detection, preventing the player from walking through objects while maintaining smooth movement and camera controls. The implementation uses efficient AABB collision detection and properly integrates with the existing movement system.
 
 Status: Ready for Step 10 implementation after validation.
+
+## Step 10: Implement Third-Person View - COMPLETED
+- Created player representation and camera management structure:
+  - Added playerGroup as a parent object in scene.js
+  - Created a simple red box as temporary player model
+  - Reorganized camera to be a child of the playerGroup in first-person mode
+  - Updated the collision detection to use playerGroup position
+- Implemented view mode toggle ('V' key) in controls.js:
+  - Added viewMode state variable ('firstPerson' or 'thirdPerson')
+  - Created switchViewMode function to handle camera repositioning
+  - In first-person mode, camera is a child of playerGroup at eye level
+  - In third-person mode, camera is a scene child positioned behind/above player
+- Enhanced third-person camera controls:
+  - Added mouse wheel zoom functionality (using event.deltaY)
+  - Implemented camera angle adjustment with mouse movement
+  - Set reasonable min/max limits for camera distance and angles
+  - Added smooth transitions between different camera positions
+- Updated UI instructions to include new controls:
+  - Added 'V - Toggle first-person/third-person view' to instructions
+  - Added information about mouse wheel zoom and angle adjustments
+- Modified collision and movement system to work with both view modes:
+  - Movement direction always based on player rotation regardless of view
+  - Collisions use playerGroup position instead of camera directly
+  - Player model rotates to face movement direction
+- Added helpful console logging for debugging camera positions and angles
+
+Current state: The game now supports both first-person and third-person camera modes. Players can toggle between modes with the 'V' key, zoom in/out with the mouse wheel, and adjust the camera angle by moving the mouse up/down in third-person mode. The player is represented by a temporary red box model that is visible in third-person view. Movement and collision detection work correctly in both view modes.
+
+Status: Ready for implementing the next feature (visible player character with more complex model).

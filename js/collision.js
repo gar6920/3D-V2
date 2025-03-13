@@ -1,25 +1,25 @@
 // Collision.js - Handles collision detection between objects
 
 import * as THREE from 'three';
-import { camera } from './scene.js';
+import { camera, playerGroup, playerModel } from './scene.js';
 import { cubes } from './scene.js';
 
 // Constants for collision detection
 const PLAYER_WIDTH = 0.5;  // Player collision box width/depth
 const PLAYER_HEIGHT = 1.8; // Player collision box height
 
-// Check for collisions between camera and objects
+// Check for collisions between player and objects
 function checkCollisions() {
     // Create player AABB
     const playerMin = new THREE.Vector3(
-        camera.position.x - PLAYER_WIDTH / 2,
-        camera.position.y - PLAYER_HEIGHT / 2,
-        camera.position.z - PLAYER_WIDTH / 2
+        playerGroup.position.x - PLAYER_WIDTH / 2,
+        playerGroup.position.y - PLAYER_HEIGHT / 2,
+        playerGroup.position.z - PLAYER_WIDTH / 2
     );
     const playerMax = new THREE.Vector3(
-        camera.position.x + PLAYER_WIDTH / 2,
-        camera.position.y + PLAYER_HEIGHT / 2,
-        camera.position.z + PLAYER_WIDTH / 2
+        playerGroup.position.x + PLAYER_WIDTH / 2,
+        playerGroup.position.y + PLAYER_HEIGHT / 2,
+        playerGroup.position.z + PLAYER_WIDTH / 2
     );
 
     // Check collision with each cube

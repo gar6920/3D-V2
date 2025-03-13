@@ -15,6 +15,10 @@ let ambientLight;
 let ground;
 let cubes = [];
 
+// Player objects
+let playerGroup;
+let playerModel;
+
 // Initialize the scene, camera, and basic objects
 function initScene() {
     // Create camera
@@ -24,8 +28,24 @@ function initScene() {
         0.1, // Near clipping plane
         1000 // Far clipping plane
     );
+    
+    // Create player group
+    playerGroup = new THREE.Object3D();
+    playerGroup.position.set(0, 0, 0);
+    scene.add(playerGroup);
+    
+    // Create a simple player model (placeholder until Feature 1)
+    const playerGeometry = new THREE.BoxGeometry(1, 1.5, 1);
+    const playerMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    playerModel = new THREE.Mesh(playerGeometry, playerMaterial);
+    playerModel.position.y = 0.75; // Half the height to place it on the ground
+    playerModel.name = 'player';
+    playerGroup.add(playerModel);
+    
+    // Add camera to player group
     camera.position.set(0, 1.5, 0); // Set camera at eye level (1.5 units)
-    camera.lookAt(0, 1.5, -1); // Look forward
+    camera.lookAt(0, 0, -1); // Look forward
+    playerGroup.add(camera);
     
     // Add lighting
     directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -69,4 +89,4 @@ function createCube(x, y, z, size, color) {
 }
 
 // Export the scene, camera, lights, and functions
-export { scene, camera, directionalLight, ambientLight, initScene, createCube, cubes }; 
+export { scene, camera, directionalLight, ambientLight, playerGroup, playerModel, initScene, createCube, cubes }; 
