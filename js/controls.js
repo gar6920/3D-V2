@@ -163,10 +163,10 @@ function updateThirdPersonCamera() {
     // Adjust horizontal position based on camera angle
     const horizontalDistance = cameraDistance * Math.cos(cameraAngle);
     
-    // Calculate final camera position
+    // Calculate final camera position - add direction instead of subtracting
     camera.position.copy(playerGroup.position)
         .add(new THREE.Vector3(0, verticalOffset, 0))
-        .sub(horizontalDirection.multiplyScalar(horizontalDistance));
+        .add(horizontalDirection.multiplyScalar(horizontalDistance));
     
     // Make camera look at player (at eye level)
     camera.lookAt(playerGroup.position.clone().add(new THREE.Vector3(0, 1, 0)));
