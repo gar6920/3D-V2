@@ -95,3 +95,23 @@ Status: Ready for Step 6 implementation.
 Current state: The scene now contains multiple colorful cubes at different positions and distances, creating an interesting environment for the player to navigate around. The cubes are properly lit and cast shadows, providing depth to the scene.
 
 Status: Ready for Step 7 implementation.
+
+## Step 7: Implement Player Movement - COMPLETED
+- Implemented updateControls() function in controls.js for player movement
+- Added camera rotation handling using 'YXZ' order for proper FPS-style rotation
+- Implemented directional movement (WASD keys) relative to camera facing direction:
+  - W: Move forward in direction of camera
+  - S: Move backward opposite to camera direction
+  - A: Strafe left relative to camera
+  - D: Strafe right relative to camera
+- Added movement vector normalization for consistent speed in all directions
+- Applied MOVEMENT_SPEED constant (0.1 units per frame) for smooth motion
+- Maintained camera height during movement (y position stays constant)
+- Integrated with existing mouse look controls:
+  - Mouse movement controls camera rotation
+  - Pitch is limited to prevent camera flipping
+  - Pointer lock is activated on click for proper FPS controls
+
+Current state: The player can now move around the scene using WASD keys and look around using the mouse. Movement is smooth and consistent in all directions, properly aligned with the camera's view direction. The scene maintains proper perspective and the controls feel responsive and natural.
+
+Status: Ready for Step 8 implementation after movement testing validation.

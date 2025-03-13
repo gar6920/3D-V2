@@ -74,7 +74,14 @@ project-root/
 - Captures mouse movement for camera rotation
 - Implements yaw (left/right) and pitch (up/down) rotation
 - Limits pitch to prevent camera flipping (±89 degrees)
-- Updates camera position and rotation based on input
+- Updates camera position and rotation based on input:
+  - Uses 'YXZ' rotation order for proper FPS camera behavior
+  - Calculates movement direction based on camera rotation
+  - Normalizes movement vector for consistent speed
+  - Applies MOVEMENT_SPEED constant for smooth motion
+  - Updates camera position while maintaining height
+  - Movement is relative to camera facing direction
+  - WASD keys move in the corresponding view-relative directions
 
 ### collision.js
 - Imports Three.js and required modules

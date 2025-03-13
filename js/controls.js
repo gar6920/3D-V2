@@ -85,7 +85,42 @@ function onMouseMove(event) {
 
 // Update camera position and rotation based on controls
 function updateControls() {
-    // Will be implemented in Step 7
+    // Update camera rotation based on mouse movement
+    camera.rotation.order = 'YXZ'; // This ensures proper FPS-style rotation
+    camera.rotation.x = pitch;
+    camera.rotation.y = yaw;
+
+    // Calculate movement direction based on camera rotation
+    const moveDirection = new THREE.Vector3();
+    
+    if (moveForward) {
+        moveDirection.z -= Math.cos(yaw);
+        moveDirection.x -= Math.sin(yaw);
+    }
+    if (moveBackward) {
+        moveDirection.z += Math.cos(yaw);
+        moveDirection.x += Math.sin(yaw);
+    }
+    if (moveLeft) {
+        moveDirection.z += Math.sin(yaw);
+        moveDirection.x -= Math.cos(yaw);
+    }
+    if (moveRight) {
+        moveDirection.z -= Math.sin(yaw);
+        moveDirection.x += Math.cos(yaw);
+    }
+
+    // Normalize movement vector to ensure consistent speed in all directions
+    if (moveDirection.length() > 0) {
+        moveDirection.normalize();
+        
+        // Apply movement speed
+        moveDirection.multiplyScalar(CONSTANTS.MOVEMENT_SPEED);
+        
+        // Update camera position
+        camera.position.x += moveDirection.x;
+        camera.position.z += moveDirection.z;
+    }
 }
 
 // Export control functions and variables
